@@ -3,7 +3,7 @@ package app.personaltargets.model;
 import lombok.Getter;
 
 @Getter
-public enum GoalCategory {
+public enum Category {
     HEALTH,
     EDUCATION,
     FINANCES,

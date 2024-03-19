@@ -1,2 +1,4 @@
-package app.personaltargets.controller;public class LoginController {
+package app.personaltargets.controller;
+
+public class LoginController {
 }

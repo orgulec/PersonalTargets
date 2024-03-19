@@ -1,2 +1,7 @@
-package app.personaltargets.repository;public interface UserRepository {
+package app.personaltargets.repository;
+
+import app.personaltargets.model.UserModel;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<UserModel, Long> {
 }

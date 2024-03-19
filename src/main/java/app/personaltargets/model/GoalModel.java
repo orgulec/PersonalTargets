@@ -1,39 +1,50 @@
 package app.personaltargets.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TargetModel {
+@Table(name = "GOALS")
+public class GoalModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    @JsonBackReference("user")
-    private UserModel user;
+    @Column(name = "NAME", length = 128, nullable = false)
+    private String name;
 
-    private TargetCategory category;
-
+    @Column(name = "DESCRIPTION")
     private String description;
 
-    private LocalDate startDate;
+    @Column(name = "CREATION_DATE")
+    private LocalDateTime creationDate;
 
-    private LocalDate endDate;
+    @Column(name = "START_DATE")
+    private LocalDateTime startDate;
 
-    private boolean notifications;
+    @Column(name = "PLANNED_END_DATE")
+    private LocalDateTime plannedEndDate;
 
-    private LocalTime notificationTime;
+    @Column(name = "END_DATE")
+    private LocalDateTime endDate;
+
+    @Column(name = "CATEGORY")
+    private Category category;
+
+    @Column(name = "STATE")
+    private State state;
+
+    @PrePersist
+    void onCreate() {
+        this.creationDate = LocalDateTime.now();
+    }
 
 }

@@ -1,25 +1,32 @@
 package app.personaltargets.service;
 
-import app.personaltargets.model.TargetModel;
-import app.personaltargets.model.UserModel;
-import app.personaltargets.repository.TargetRepository;
+import app.personaltargets.dto.GoalDto;
+import app.personaltargets.model.GoalModel;
+import app.personaltargets.repository.GoalRepository;
+import app.personaltargets.utils.mappers.Mappers;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class TargetService {
-    private final TargetRepository targetRepository;
+public class GoalService {
+    private final GoalRepository goalRepository;
     private final UserService userService;
+    private final Mappers mapper;
 
-    public List<TargetModel> getByUserId(Long id) {
-        return targetRepository.findAllByUser_Id(id);
+    public GoalModel addGoal(GoalDto goal) {
+        GoalModel goalModel = mapper.goalToModel(goal);
+        return goalRepository.save(goalModel);
     }
 
-    public TargetModel addTarget(TargetModel target) {
-
-        return targetRepository.save(target);
+    public GoalModel getById(Long id) {
+        Optional<GoalModel> goalOpt = goalRepository.findById(id);
+        if(goalOpt.isEmpty()){
+            throw new EntityNotFoundException("No goal founded.");
+        }
+        return goalOpt.get();
     }
 }

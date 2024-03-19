@@ -1,4 +1,4 @@
-package app.restaurantapp.dto;
+package app.personaltargets.dto;
 
 import lombok.Data;
 

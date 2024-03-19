@@ -1,27 +1,28 @@
 package app.personaltargets.controller;
 
+import app.personaltargets.dto.GoalDto;
 import app.personaltargets.model.GoalModel;
 import app.personaltargets.service.GoalService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/target")
+@RequestMapping("/goal")
 @RequiredArgsConstructor
-public class TargetController {
+public class GoalController {
 
     private final GoalService goalService;
-    @GetMapping("/allById/{id}")
-    public ResponseEntity<List<GoalModel>> getById(@PathVariable Long id){
-        return ResponseEntity.ok(goalService.getByUserId(id));
+    @GetMapping("/getById/{id}")
+    public ResponseEntity<GoalModel> getById(@PathVariable Long id){
+       return ResponseEntity.ok(goalService.getById(id));
     }
 
     @PostMapping("/addNew")
-    public ResponseEntity<GoalModel> addNewTarget(@RequestBody GoalModel target){
-        return ResponseEntity.ok(goalService.addTarget(target));
+    public ResponseEntity<GoalModel> addNewGoal(@Valid @RequestBody GoalDto goal){
+        return ResponseEntity.ok(goalService.addGoal(goal));
     }
+
 
 }
