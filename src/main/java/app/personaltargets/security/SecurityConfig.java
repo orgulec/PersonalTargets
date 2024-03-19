@@ -29,6 +29,7 @@ import org.springframework.security.web.SecurityFilterChain;
                                     .requestMatchers("/habit/**").hasRole("USER")
                                     .requestMatchers("/reminder/**").hasRole("USER")
                                     .requestMatchers("/register/**").permitAll()
+                                    .requestMatchers("/login/**").permitAll()
                                     .requestMatchers("/**").permitAll()
                     ).httpBasic(Customizer.withDefaults());
             return http.build();
