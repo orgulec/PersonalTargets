@@ -25,7 +25,7 @@ public class ReminderController {
         return ResponseEntity.ok(reminderService.createNewReminder(reminder));
     }
     @PutMapping("/modifyById/{id}")
-    public ResponseEntity<ReminderModel> createReminder(@PathVariable Long id, @Valid @RequestBody ReminderModel reminder){
+    public ResponseEntity<ReminderModel> changeReminder(@PathVariable Long id, @Valid @RequestBody ReminderModel reminder){
         return ResponseEntity.ok(reminderService.updateReminder(id, reminder));
     }
 

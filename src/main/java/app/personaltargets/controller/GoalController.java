@@ -23,6 +23,10 @@ public class GoalController {
     public ResponseEntity<GoalModel> addNewGoal(@Valid @RequestBody GoalDto goal){
         return ResponseEntity.ok(goalService.addGoal(goal));
     }
+    @PutMapping("/modifyById/{id}")
+    public ResponseEntity<GoalModel> changeGoal(@PathVariable Long id, @Valid @RequestBody GoalDto goal){
+        return ResponseEntity.ok(goalService.updateGoalById(id, goal));
+    }
 
 
 }

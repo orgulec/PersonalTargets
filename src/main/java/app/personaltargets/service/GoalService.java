@@ -29,4 +29,16 @@ public class GoalService {
         }
         return goalOpt.get();
     }
+
+    public GoalModel updateGoalById(Long id, GoalDto goal) {
+        GoalModel goalToUpdate = getById(id);
+        goalToUpdate.setName(goal.getName());
+        goalToUpdate.setDescription(goal.getDescription());
+        goalToUpdate.setCategory(goal.getCategory());
+        goalToUpdate.setState(goal.getState());
+        goalToUpdate.setEndDate(goal.getEndDate());
+        goalToUpdate.setStartDate(goal.getStartDate());
+        goalToUpdate.setPlannedEndDate(goal.getPlannedEndDate());
+        return goalRepository.save(goalToUpdate);
+    }
 }
