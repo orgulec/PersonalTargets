@@ -1,6 +1,7 @@
 package app.personaltargets.service;
 
 import app.personaltargets.dto.UserDto;
+import app.personaltargets.model.GoalModel;
 import app.personaltargets.model.UserModel;
 import app.personaltargets.repository.UserRepository;
 import app.personaltargets.utils.mappers.Mappers;
@@ -31,6 +32,12 @@ public class UserService {
             throw new EntityNotFoundException("User not found");
         }
         return userOpt.get();
+    }
+
+    public void addGoalToUser(Long id, GoalModel goal){
+        UserModel userById = getUserById(id);
+        userById.getGoals().add(goal);
+        userRepository.save(userById);
     }
 
 }

@@ -3,6 +3,7 @@ package app.personaltargets.controller;
 import app.personaltargets.dto.UserDto;
 import app.personaltargets.model.UserModel;
 import app.personaltargets.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ public class RegistrationController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserModel> registerUser(@RequestBody UserDto user){
+    public ResponseEntity<UserModel> registerUser(@Valid @RequestBody UserDto user){
         return ResponseEntity.ok(userService.createUser(user));
     }
 }

@@ -18,6 +18,9 @@ public class GoalModel {
     @Setter(AccessLevel.NONE)
     private Long id;
 
+    @Column(name = "USER_ID", nullable = false)
+    private Long user_id;
+
     @Column(name = "NAME", length = 128, nullable = false)
     private String name;
 

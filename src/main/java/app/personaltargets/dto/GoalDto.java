@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public class GoalDto {
 
     private Long id;
+    private Long user_id;
     private String name;
     private String description;
     private LocalDateTime creationDate;

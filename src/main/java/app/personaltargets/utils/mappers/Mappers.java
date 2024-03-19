@@ -34,6 +34,7 @@ public class Mappers {
     public GoalDto goalToDto(GoalModel model){
         GoalDto dto = new GoalDto();
         dto.setId(model.getId());
+        dto.setUser_id(model.getUser_id());
         dto.setCategory(model.getCategory());
         dto.setDescription(model.getDescription());
         dto.setName(model.getName());
@@ -46,6 +47,7 @@ public class Mappers {
     }
     public GoalModel goalToModel(GoalDto dto){
         GoalModel model = new GoalModel();
+        model.setUser_id(dto.getUser_id());
         model.setCategory(dto.getCategory());
         model.setDescription(dto.getDescription());
         model.setName(dto.getName());

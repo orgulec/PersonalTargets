@@ -2,6 +2,7 @@ package app.personaltargets.service;
 
 import app.personaltargets.dto.GoalDto;
 import app.personaltargets.model.GoalModel;
+import app.personaltargets.model.State;
 import app.personaltargets.model.UserModel;
 import app.personaltargets.repository.GoalRepository;
 import app.personaltargets.utils.mappers.Mappers;
@@ -10,7 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -51,5 +54,18 @@ public class GoalService {
             throw new EntityNotFoundException("No goals founded for user "+ user.getUsername()+".");
         }
         return goals;
+    }
+
+    public String getStatisticsByUserId(Long id) {
+        List<GoalModel> goalsByUserId = getAllByUserId(id);
+
+        List<GoalModel> goalsDone = goalsByUserId.stream()
+                .filter(a -> a.getState().equals(State.DONE)
+                ).toList();
+        List<GoalModel> goalsFailed = goalsByUserId.stream()
+                .filter(a -> a.getState().equals(State.FAILED)
+                ).toList();
+        StringBuilder summary = new StringBuilder("Goals done: " + (long) goalsDone.size() + "\n Goals failed: "+ (long) goalsFailed.size() + "\n All goals: "+ goalsByUserId.size());
+        return summary.toString();
     }
 }

@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -34,16 +36,19 @@ import org.springframework.security.web.SecurityFilterChain;
                     ).httpBasic(Customizer.withDefaults());
             return http.build();
         }
-
-        @Bean
-        UserDetailsService userDetailsService(){
-            UserDetails goalUser = User.withDefaultPasswordEncoder()
-                    .username("goalUser")
-                    .password("pass")
-                    .roles("USER")
-                    .build();
-            return new InMemoryUserDetailsManager(goalUser);
-        }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+    @Bean
+    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
+        UserDetails goalUser = User.builder()
+                .username("goalUser")
+                .password(passwordEncoder.encode("pass")) // Kodowanie hasła
+                .roles("USER")
+                .build();
+        return new InMemoryUserDetailsManager(goalUser);
+    }
 
         @Bean
         AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {

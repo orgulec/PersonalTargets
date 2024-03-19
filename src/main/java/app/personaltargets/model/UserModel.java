@@ -2,6 +2,7 @@ package app.personaltargets.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.apache.tomcat.util.digester.ArrayStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +35,8 @@ public class UserModel {
     @Column(name = "EMAIL", length = 128, nullable = false)
     private String email;
 
-    @OneToMany
-    private List<GoalModel> goals = new ArrayList<>();
+    @OneToMany(mappedBy = "user_id", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<GoalModel> goals = new ArrayStack<>();
 
     @Override
     public boolean equals(Object o) {

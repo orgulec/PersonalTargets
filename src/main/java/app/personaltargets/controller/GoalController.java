@@ -35,5 +35,8 @@ public class GoalController {
         return ResponseEntity.ok(goalService.updateGoalById(id, goal));
     }
 
-
+    @GetMapping("/statistics/{id}")
+    public ResponseEntity<String> getGoalsStatisticsByUserId(@PathVariable Long id) {
+        return ResponseEntity.ok(goalService.getStatisticsByUserId(id));
+    }
 }

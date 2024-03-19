@@ -17,7 +17,7 @@ public class HabitController {
 
     private final HabitService habitService;
 
-    @GetMapping("/AllByUserId/{id}")
+    @GetMapping("/allByUserId/{id}")
     public ResponseEntity<List<HabitModel>> getAllByUserId(@PathVariable Long id){
         return ResponseEntity.ok(habitService.getAllByUserId(id));
     }
