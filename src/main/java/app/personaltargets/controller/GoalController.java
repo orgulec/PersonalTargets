@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/goal")
 @RequiredArgsConstructor
@@ -17,6 +19,11 @@ public class GoalController {
     @GetMapping("/getById/{id}")
     public ResponseEntity<GoalModel> getById(@PathVariable Long id){
        return ResponseEntity.ok(goalService.getById(id));
+    }
+
+    @GetMapping("/getAllById/{id}")
+    public ResponseEntity<List<GoalModel>> getAllByUserId(@PathVariable Long id){
+       return ResponseEntity.ok(goalService.getAllByUserId(id));
     }
 
     @PostMapping("/addNew")
