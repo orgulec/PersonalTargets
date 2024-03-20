@@ -37,13 +37,13 @@ public class GoalService {
 
     public GoalModel updateGoalById(Long id, GoalDto goal) {
         GoalModel goalToUpdate = getById(id);
-        goalToUpdate.setName(goal.getName());
-        goalToUpdate.setDescription(goal.getDescription());
-        goalToUpdate.setCategory(goal.getCategory());
-        goalToUpdate.setState(goal.getState());
-        goalToUpdate.setEndDate(goal.getEndDate());
-        goalToUpdate.setStartDate(goal.getStartDate());
-        goalToUpdate.setPlannedEndDate(goal.getPlannedEndDate());
+        if(goal.getName()!=null)    goalToUpdate.setName(goal.getName());
+        if(goal.getDescription()!=null)    goalToUpdate.setDescription(goal.getDescription());
+        if(goal.getCategory()!=null)    goalToUpdate.setCategory(goal.getCategory());
+        if(goal.getState()!=null)    goalToUpdate.setState(goal.getState());
+        if(goal.getEndDate()!=null)    goalToUpdate.setEndDate(goal.getEndDate());
+        if(goal.getStartDate()!=null)    goalToUpdate.setStartDate(goal.getStartDate());
+        if(goal.getPlannedEndDate()!=null)    goalToUpdate.setPlannedEndDate(goal.getPlannedEndDate());
         return goalRepository.save(goalToUpdate);
     }
 
@@ -58,14 +58,16 @@ public class GoalService {
 
     public String getStatisticsByUserId(Long id) {
         List<GoalModel> goalsByUserId = getAllByUserId(id);
-
+        if(goalsByUserId.isEmpty()){
+            throw new EntityNotFoundException("No goals founded for this user.");
+        }
         List<GoalModel> goalsDone = goalsByUserId.stream()
                 .filter(a -> a.getState().equals(State.DONE)
                 ).toList();
         List<GoalModel> goalsFailed = goalsByUserId.stream()
                 .filter(a -> a.getState().equals(State.FAILED)
                 ).toList();
-        StringBuilder summary = new StringBuilder("Goals done: " + (long) goalsDone.size() + "\n Goals failed: "+ (long) goalsFailed.size() + "\n All goals: "+ goalsByUserId.size());
+        StringBuilder summary = new StringBuilder("Goals done: " + (long) goalsDone.size() + "\nGoals failed: "+ (long) goalsFailed.size() + "\nAll goals: "+ goalsByUserId.size());
         return summary.toString();
     }
 }

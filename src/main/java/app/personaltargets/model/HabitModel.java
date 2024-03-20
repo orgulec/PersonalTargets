@@ -17,7 +17,7 @@ public class HabitModel {
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private UserModel user;
 
     @Column(name = "NAME")
