@@ -8,11 +8,9 @@ import app.personaltargets.repository.GoalRepository;
 import app.personaltargets.repository.ReminderRepository;
 import app.personaltargets.repository.UserRepository;
 import app.personaltargets.utils.mappers.Mappers;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
@@ -28,6 +26,10 @@ class ReminderServiceTest {
     private ReminderService reminderService;
     @Mock
     private Mappers mapper;
+    @BeforeEach
+    void setup(){
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     void createNewReminder_shouldCreateNewReminderWithGoal() {
