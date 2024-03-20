@@ -45,7 +45,7 @@ class GoalControllerTest {
 
 
     @Test
-    void changeGoal() {
+    void changeGoal_shouldCorrectlyUpdateGoal() {
         //given
         Long id = 1L;
         GoalModel goalToUpdate = new GoalModel();

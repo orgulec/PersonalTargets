@@ -4,6 +4,9 @@ import app.personaltargets.dto.GoalDto;
 import app.personaltargets.model.GoalModel;
 import app.personaltargets.repository.GoalRepository;
 import app.personaltargets.utils.mappers.Mappers;
+import jakarta.persistence.EntityNotFoundException;
+import org.hibernate.action.internal.EntityActionVetoException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -12,7 +15,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class GoalServiceTest {
@@ -40,9 +47,9 @@ class GoalServiceTest {
         goalModel.setUser_id(id);
 
         //when
-        Mockito.when(mapper.goalToModel(newGoal)).thenReturn(goalModel);
-        Mockito.when(goalService.addGoal(newGoal)).thenReturn(goalModel);
-        Mockito.when(goalRepository.save(goalModel)).thenReturn(goalModel);
+        when(mapper.goalToModel(newGoal)).thenReturn(goalModel);
+        when(goalService.addGoal(newGoal)).thenReturn(goalModel);
+        when(goalRepository.save(goalModel)).thenReturn(goalModel);
 
         //then
         goalService.addGoal(newGoal);
@@ -50,9 +57,39 @@ class GoalServiceTest {
     }
 
     @Test
-    void getById() {
+    void getById_shouldCorrectlyGetGoal() {
+        //given
+        String name = "goal1";
+        Long id = 1L;
 
+        GoalModel goalModel = new GoalModel();
+        goalModel.setName(name);
+        goalModel.setUser_id(id);
 
+        //when
+        when(goalRepository.findById(id)).thenReturn(Optional.of(goalModel));
+
+        //then
+        GoalModel resultGoal = goalService.getById(id);
+        assertEquals(goalModel, resultGoal);
+
+    }
+    @Test
+    void getById_shouldThrowEntityNotFoundException() {
+        //given
+        String name = "goal1";
+        Long id = 1L;
+
+        GoalModel goalModel = new GoalModel();
+        goalModel.setName(name);
+        goalModel.setUser_id(id);
+
+        //when
+        when(goalRepository.findById(id)).thenReturn(Optional.empty());
+//        when(goalRepository.findById(id)).thenThrow(EntityNotFoundException.class);
+
+        //then
+        assertThrows(EntityNotFoundException.class, () -> goalService.getById(id));
 
     }
 }

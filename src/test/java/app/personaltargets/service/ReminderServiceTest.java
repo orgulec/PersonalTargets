@@ -8,12 +8,17 @@ import app.personaltargets.repository.GoalRepository;
 import app.personaltargets.repository.ReminderRepository;
 import app.personaltargets.repository.UserRepository;
 import app.personaltargets.utils.mappers.Mappers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class ReminderServiceTest {
     @Mock
@@ -43,8 +48,8 @@ class ReminderServiceTest {
         reminder.setUserId(id);
 
         //when
-        Mockito.when(userService.getUserById(id)).thenReturn(user);
-        Mockito.when(reminderRepository.save(reminder)).thenReturn(reminder);
+        when(userService.getUserById(id)).thenReturn(user);
+        when(reminderRepository.save(reminder)).thenReturn(reminder);
 
         //then
         reminderService.createNewReminder(reminder);
@@ -64,8 +69,8 @@ class ReminderServiceTest {
         reminder.setUserId(id);
 
         //when
-        Mockito.when(userService.getUserById(id)).thenReturn(user);
-        Mockito.when(reminderRepository.save(reminder)).thenReturn(reminder);
+        when(userService.getUserById(id)).thenReturn(user);
+        when(reminderRepository.save(reminder)).thenReturn(reminder);
 
         //then
         reminderService.createNewReminder(reminder);
@@ -74,6 +79,28 @@ class ReminderServiceTest {
     }
 
     @Test
-    void updateReminder() {
+    void updateReminder_shouldCorrectlyUpdateReminder() {
+        //given
+        Long id = 1L;
+        String oldName = "old reminder";
+        String newName = "new reminder";
+
+        ReminderModel reminderToUpdate = new ReminderModel();
+        reminderToUpdate.setName(oldName);
+
+        ReminderModel reminderRequest = new ReminderModel();
+        reminderRequest.setName(newName);
+
+        ReminderModel updatedReminder = new ReminderModel();
+        updatedReminder.setName(newName);
+
+        //when
+        when(reminderRepository.findById(id)).thenReturn(Optional.of(reminderToUpdate));
+        when(reminderRepository.save(updatedReminder)).thenReturn(updatedReminder);
+
+        //then
+        ReminderModel result = reminderService.updateReminder(id, reminderRequest);
+        verify(reminderRepository).save(ArgumentMatchers.any(ReminderModel.class));
+        assertEquals(newName, result.getName());
     }
 }

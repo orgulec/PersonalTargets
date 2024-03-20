@@ -38,18 +38,17 @@ public class ReminderService {
         if(reminderOpt.isEmpty()){
             throw new EntityNotFoundException("No reminder founded.");
         }
-        ReminderModel reminderToUpdate = updatingReminderIfNeeded(reminder, reminderOpt);
+        ReminderModel updatedReminder = updatingReminderIfNeeded(reminder, reminderOpt.get());
 
-        return reminderRepository.save(reminderToUpdate);
+        return reminderRepository.save(updatedReminder);
     }
 
-    private static ReminderModel updatingReminderIfNeeded(ReminderModel reminder, Optional<ReminderModel> reminderOpt) {
-        ReminderModel reminderToUpdate = reminderOpt.get();
-        if(reminder.getGoal()!=null)    reminderToUpdate.setGoal(reminder.getGoal());
-        if(reminder.getHabit()!=null)   reminderToUpdate.setHabit(reminder.getHabit());
-        if(reminder.getRemindTime()!=null)   reminderToUpdate.setRemindTime(reminder.getRemindTime());
-        if(reminder.getName()!=null)   reminderToUpdate.setName(reminder.getName());
-        reminderToUpdate.setActive(reminder.isActive());
+    private static ReminderModel updatingReminderIfNeeded(ReminderModel update, ReminderModel reminderToUpdate) {
+        if(update.getGoal()!=null)    reminderToUpdate.setGoal(update.getGoal());
+        if(update.getHabit()!=null)   reminderToUpdate.setHabit(update.getHabit());
+        if(update.getRemindTime()!=null)   reminderToUpdate.setRemindTime(update.getRemindTime());
+        if(update.getName()!=null)   reminderToUpdate.setName(update.getName());
+        reminderToUpdate.setActive(update.isActive());
         return reminderToUpdate;
     }
 }
