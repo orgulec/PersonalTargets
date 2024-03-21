@@ -93,7 +93,7 @@ class ReminderServiceTest {
 
         //when
         when(reminderRepository.findById(id)).thenReturn(Optional.of(reminderToUpdate));
-
+//        when(reminderRepository.save(any(ReminderModel.class))).thenAnswer(i -> i.getArguments()[0]);
         //then
         reminderService.updateReminder(id, reminderRequest);
         verify(reminderRepository).save(argThat(argument ->
