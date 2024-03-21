@@ -69,6 +69,5 @@ class GoalControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(updatedGoal, response.getBody());
 
-
     }
 }

@@ -86,7 +86,6 @@ class GoalServiceTest {
 
         //when
         when(goalRepository.findById(id)).thenReturn(Optional.empty());
-//        when(goalRepository.findById(id)).thenThrow(EntityNotFoundException.class);
 
         //then
         assertThrows(EntityNotFoundException.class, () -> goalService.getById(id));

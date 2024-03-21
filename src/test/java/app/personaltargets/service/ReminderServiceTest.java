@@ -91,16 +91,12 @@ class ReminderServiceTest {
         ReminderModel reminderRequest = new ReminderModel();
         reminderRequest.setName(newName);
 
-        ReminderModel updatedReminder = new ReminderModel();
-        updatedReminder.setName(newName);
-
         //when
         when(reminderRepository.findById(id)).thenReturn(Optional.of(reminderToUpdate));
-        when(reminderRepository.save(updatedReminder)).thenReturn(updatedReminder);
 
         //then
-        ReminderModel result = reminderService.updateReminder(id, reminderRequest);
-        verify(reminderRepository).save(ArgumentMatchers.any(ReminderModel.class));
-        assertEquals(newName, result.getName());
+        reminderService.updateReminder(id, reminderRequest);
+        verify(reminderRepository).save(argThat(argument ->
+                argument.getName().equals(newName))); // Sprawdamy, czy nazwa została zaktualizowan
     }
 }
