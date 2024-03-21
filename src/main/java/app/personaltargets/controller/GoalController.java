@@ -1,6 +1,7 @@
 package app.personaltargets.controller;
 
 import app.personaltargets.dto.GoalDto;
+import app.personaltargets.dto.GoalStatsDto;
 import app.personaltargets.model.GoalModel;
 import app.personaltargets.service.GoalService;
 import jakarta.validation.Valid;

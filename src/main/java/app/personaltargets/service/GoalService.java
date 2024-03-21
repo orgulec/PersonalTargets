@@ -1,6 +1,7 @@
 package app.personaltargets.service;
 
 import app.personaltargets.dto.GoalDto;
+import app.personaltargets.dto.GoalStatsDto;
 import app.personaltargets.model.GoalModel;
 import app.personaltargets.model.State;
 import app.personaltargets.model.UserModel;
@@ -61,13 +62,24 @@ public class GoalService {
         if(goalsByUserId.isEmpty()){
             throw new EntityNotFoundException("No goals founded for this user.");
         }
-        List<GoalModel> goalsDone = goalsByUserId.stream()
-                .filter(a -> a.getState().equals(State.DONE)
-                ).toList();
-        List<GoalModel> goalsFailed = goalsByUserId.stream()
-                .filter(a -> a.getState().equals(State.FAILED)
-                ).toList();
-        StringBuilder summary = new StringBuilder("Goals done: " + (long) goalsDone.size() + "\nGoals failed: "+ (long) goalsFailed.size() + "\nAll goals: "+ goalsByUserId.size());
-        return summary.toString();
+        GoalStatsDto statistics = new GoalStatsDto();
+
+        Map<State, Long> goalsCountByState = goalsByUserId.stream()
+                .collect(Collectors.groupingBy(GoalModel::getState, Collectors.counting()));
+
+        statistics.setDone(goalsCountByState.getOrDefault(State.DONE, 0L));
+        statistics.setFailed(goalsCountByState.getOrDefault(State.FAILED, 0L));
+        statistics.setScheduled(goalsCountByState.getOrDefault(State.SCHEDULED, 0L));
+        statistics.setOnHold(goalsCountByState.getOrDefault(State.ON_HOLD, 0L));
+        statistics.setInProgress(goalsCountByState.getOrDefault(State.IN_PROGRESS, 0L));
+
+        return String.format("Goals done: %d\nGoals failed: %d\nGoals scheduled: %d\nGoals on hold: %d\nGoals in progress: %d\nAll goals: %d",
+                statistics.getDone(),
+                statistics.getFailed(),
+                statistics.getScheduled(),
+                statistics.getOnHold(),
+                statistics.getInProgress(),
+                goalsByUserId.size());
+
     }
 }
